@@ -50,7 +50,7 @@ app.post("/api/persons", (request, response) =>
 
     if(persons.map(person => person.name).some(name => name === body.name))
     {
-        return response.status(400).json({ error: "name must be unique." });
+        return response.status(409).json({ error: "name must be unique." });
     }
     
     const person = 

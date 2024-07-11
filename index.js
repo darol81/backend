@@ -1,6 +1,8 @@
 
 const express = require("express");
 const app = express();
+const morgan = require("morgan");
+
 
 const requestLogger = (request, response, next) => 
 {
@@ -13,8 +15,17 @@ const requestLogger = (request, response, next) =>
 
 /* Middlewares */
 app.use(express.json());
-app.use(requestLogger);
+//app.use(requestLogger);
 
+/* Morgan middleware */
+morgan.token("body", request => 
+{
+    return JSON.stringify(request.body);
+});
+  
+/* Tiny format + token */
+format = `:method :url :status :res[content-length] - :response-time ms :body`;
+app.use(morgan(format));
 
 /* Defined data */
 

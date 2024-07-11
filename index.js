@@ -2,7 +2,21 @@
 const express = require("express");
 const app = express();
 
+const requestLogger = (request, response, next) => 
+{
+    console.log("Method:", request.method);
+    console.log("Path:  ", request.path);
+    console.log("Body:  ", request.body);
+    console.log("---");
+    next();
+}
+
+/* Middlewares */
 app.use(express.json());
+app.use(requestLogger);
+
+
+/* Defined data */
 
 let persons = 
 [
@@ -102,6 +116,13 @@ app.delete("/api/persons/:id", (request, response) =>
     persons = persons.filter(person => person.id !== id);
     response.status(204).end();
 });
+
+const unknownEndpoint = (request, response) => 
+{
+    response.status(404).send({ error: "unknown endpoint" });
+}
+  
+  app.use(unknownEndpoint)
 
 /* Pääohjelma */
 

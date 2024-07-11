@@ -3,7 +3,6 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 
-
 const requestLogger = (request, response, next) => 
 {
     console.log("Method:", request.method);
@@ -24,8 +23,8 @@ morgan.token("body", request =>
 });
   
 /* Tiny format + token */
-format = `:method :url :status :res[content-length] - :response-time ms :body`;
-app.use(morgan(format));
+const tiny_format = `:method :url :status :res[content-length] - :response-time ms :body`;
+app.use(morgan(tiny_format));
 
 /* Defined data */
 

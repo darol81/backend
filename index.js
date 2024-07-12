@@ -2,6 +2,7 @@
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
+const cors = require("cors");
 
 const requestLogger = (request, response, next) => 
 {
@@ -13,9 +14,11 @@ const requestLogger = (request, response, next) =>
 }
 
 /* Middlewares */
+app.use(cors());
+app.use(express.static("dist"));
 app.use(express.json());
-//app.use(requestLogger);
 
+//app.use(requestLogger);
 /* Morgan middleware */
 morgan.token("body", request => 
 {
@@ -57,6 +60,7 @@ let persons =
 /*
 app.get("/", (request, response) => 
 {
+
 });
 
 */
@@ -81,7 +85,7 @@ app.post("/api/persons", (request, response) =>
     {
         name: body.name,
         number: body.number,
-        id: Math.floor(Math.random() * 100000000)
+        id: String(Math.floor(Math.random() * 100000000))
     }
     persons = persons.concat(person);    
     response.json(person);
@@ -136,7 +140,7 @@ const unknownEndpoint = (request, response) =>
 
 /* Pääohjelma */
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => 
 {

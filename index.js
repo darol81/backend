@@ -70,7 +70,7 @@ app.get("/", (request, response) =>
 
 /* ROUTES, post */
 
-app.post("/api/persons", (request, response) => 
+app.post("/api/persons", (request, response, next) => 
 {  
     const body = request.body;
 
@@ -81,7 +81,10 @@ app.post("/api/persons", (request, response) =>
 
     if(persons.map(person => person.name).some(name => name === body.name))
     {
-        return response.status(409).json({ error: "name must be unique." });
+        request.method = "PUT";
+        request.url = `/api/persons/${request.body.id}`;
+        next();
+        return;
     }
     
     const person = new Person

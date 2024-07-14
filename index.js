@@ -98,7 +98,7 @@ app.post("/api/persons", (request, response) =>
 
 /* ROUTES, put */
 
-app.put("/api/notes/:id", (request, response, next) => 
+app.put("/api/persons/:id", (request, response, next) => 
 {
     const body = request.body;
   
@@ -108,7 +108,7 @@ app.put("/api/notes/:id", (request, response, next) =>
         number: body.number
     }
   
-    Note.findByIdAndUpdate(request.params.id, person, { new: true }).then(updatedPerson => 
+    Person.findByIdAndUpdate(request.params.id, person, { new: true }).then(updatedPerson => 
     {
         response.json(updatedPerson);
     }).catch(error => next(error));

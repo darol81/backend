@@ -84,14 +84,16 @@ app.post("/api/persons", (request, response) =>
         return response.status(409).json({ error: "name must be unique." });
     }
     
-    const person = 
-    {
+    const person = new Person
+    ({
         name: body.name,
         number: body.number,
-        id: String(Math.floor(Math.random() * 100000000))
-    }
-    persons = persons.concat(person);    
-    response.json(person);
+    });
+
+    person.save().then(savedPerson => 
+    {
+        response.json(savedPerson);
+    });
 });
     
 
@@ -118,17 +120,10 @@ app.get("/api/persons", (request, response) =>
 
 app.get("/api/persons/:id", (request, response) => 
 {
-    const id = request.params.id;
-    const person = persons.find(person => person.id === id);
-    
-    if(person)
-    {    
+    Person.findById(request.params.id).then(person => 
+    {
         response.json(person);
-    } 
-    else 
-    {    
-        response.status(404).end();
-    }
+    });
 });
     
 /* ROUTES, delete */

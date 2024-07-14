@@ -121,10 +121,13 @@ app.put("/api/persons/:id", (request, response, next) =>
 
 app.get("/info", (request, response) => 
 {   
-    date_time = new Date();
-    info = `<p>Phonebook has info for ${persons.length} people</p>
-            <p>${date_time}</p>`;
-    response.send(info);
+    Person.countDocuments({}).then(count => 
+    {
+        date_time = new Date();
+        info = `<p>Phonebook has info for ${count} people</p>
+                <p>${date_time}</p>`;
+        response.send(info);
+    });
 });
 
 app.get("/api/persons", (request, response) => 

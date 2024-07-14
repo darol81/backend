@@ -95,7 +95,24 @@ app.post("/api/persons", (request, response) =>
         response.json(savedPerson);
     });
 });
-    
+
+/* ROUTES, put */
+
+app.put("/api/notes/:id", (request, response, next) => 
+{
+    const body = request.body;
+  
+    const person = 
+    {
+        name: body.name,
+        number: body.number
+    }
+  
+    Note.findByIdAndUpdate(request.params.id, person, { new: true }).then(updatedPerson => 
+    {
+        response.json(updatedPerson);
+    }).catch(error => next(error));
+});
 
 /* GET routes */
 
@@ -114,32 +131,56 @@ app.get("/api/persons", (request, response) =>
     {
         response.json(people);
     });
-    
 });
    
 
-app.get("/api/persons/:id", (request, response) => 
+app.get("/api/persons/:id", (request, response, next) => 
 {
     Person.findById(request.params.id).then(person => 
     {
-        response.json(person);
-    });
+        if(person)
+        {
+            response.json(person);
+        }
+        else
+        {
+            response.status(404).end();
+        }
+    }).catch(error => next(error));
 });
     
 /* ROUTES, delete */
-app.delete("/api/persons/:id", (request, response) => 
+app.delete("/api/persons/:id", (request, response, next) => 
 {
-    const id = request.params.id;
-    persons = persons.filter(person => person.id !== id);
-    response.status(204).end();
+    Person.findByIdAndDelete(request.params.id).then(result =>
+    {
+        response.status(204).end();
+
+    }).catch(error => next(error));
 });
+
+/* Wrong routes */
 
 const unknownEndpoint = (request, response) => 
 {
     response.status(404).send({ error: "unknown endpoint" });
 }
-  
+
 app.use(unknownEndpoint);
+
+/* Error handling */
+const errorHandler = (error, request, response, next) => 
+{
+    console.error(error.message);
+  
+    if(error.name === "CastError") 
+    {
+        return response.status(400).send({ error: 'malformatted id' })
+    }
+    next(error);
+}
+  
+app.use(errorHandler);
 
 /* Pääohjelma */
 

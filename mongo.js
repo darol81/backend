@@ -12,7 +12,7 @@ const url = `mongodb+srv://fullstack:${password}@cluster0.kcfxst6.mongodb.net/Ph
 mongoose.set("strictQuery", false);
 mongoose.connect(url);
 
-const phoneSchema = new mongoose.Schema
+const personSchema = new mongoose.Schema
 ({
     name: String,
     number: String
@@ -33,7 +33,7 @@ const addPerson = (name, number) =>
 }
 
 
-const Person = mongoose.model("Person", phoneSchema);
+const Person = mongoose.model("Person", personSchema);
 
 if(process.argv.length == 3)
 {

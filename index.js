@@ -5,7 +5,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 
 /* Models */
-const Person = require("./models/note");
+const Person = require("./models/person");
 
 const requestLogger = (request, response, next) => 
 {

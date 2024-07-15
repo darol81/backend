@@ -7,6 +7,7 @@
     "dev": "nodemon index.js",
     "lint:home": "eslint --fix . --config eslint.home.mjs",
     "lint:github": "eslint --fix . --config eslint.config.mjs",
+    "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Topi Mansikkaviita",

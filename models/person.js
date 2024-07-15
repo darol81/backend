@@ -14,7 +14,21 @@ mongoose.connect(url).then(result =>
 const personSchema = new mongoose.Schema
 ({
     name: { type: String, minlength: 3, required: true },
-    number: String,
+    number: 
+    {
+        type: String,
+        validate: 
+        {
+            validator: function(v) 
+            {
+                const parts = val.split("-");
+                const pattern1 = /^\d{2,3}$/;  // Eka osa, 2-3 numeroa 
+                const pattern2 = /^\d+$/;      // Toka osa: Tarkistetaan että sisältää numeroita
+                return (parts.length === 2 && pattern1.test(parts[0]) && pattern2.test(parts[1]) && val.length >= 8);
+            },       
+            required: [true, "Phone number required."]
+        }
+    }
 });
 
 personSchema.set('toJSON', 

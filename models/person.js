@@ -19,7 +19,7 @@ const personSchema = new mongoose.Schema
         type: String,
         validate: 
         {
-            validator: function(v) 
+            validator: function(val) 
             {
                 const parts = val.split("-");
                 const pattern1 = /^\d{2,3}$/;  // Eka osa, 2-3 numeroa 
